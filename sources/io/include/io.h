@@ -52,10 +52,9 @@ namespace faber { inline namespace v1_0_0 {
 		 * @returns `true` if the file could be opened and if `read_fn` returned 
 		 *          successfully, `false` otherwise.
 		*/
-		bool read_file(
-			const fs::path& filename, 
-			std::function<bool(std::ifstream&)>& read_fn
-		);
+		const auto read_file = [](const fs::path& filename, auto& read_fn) -> bool {
+			return invoke_read_or_write(filename, read_fn, std::ios_base::in);
+		};
 
 		/**
 		 * Implements boilerplate code for opening and closing regular files for writing
@@ -74,10 +73,9 @@ namespace faber { inline namespace v1_0_0 {
 		 * @returns `true` if the file could be opened and if `write_fn` returned 
 		 *          successfully, `false` otherwise.
 		*/
-		bool write_file(
-			const fs::path& filename, 
-			std::function<bool(std::ofstream&)>& write_fn
-		);
+		const auto write_fn = [](const fs::path& filename, auto& write_fn) -> bool {
+			return invoke_read_or_write(filename, write_fn, std::ios_base::out);
+		};
 
 		/**
 		 * Attempts to create a given directory. Parent directories will be created as 
@@ -88,10 +86,17 @@ namespace faber { inline namespace v1_0_0 {
 		 *
 		 * @returns `true` if the directory(ies) were created, `false` otherwise.
 		*/
-		bool 
-		try_mkdirs(
-			const fs::path& dir
-		);
+		const auto try_mkdir = [](const fs::path& dir) -> bool {
+			std::error_code ec{};
+			if (not fs::create_directories(dir, ec)) {
+				std::cerr <<
+					"[ERROR] `faber::io::try_mkdirs`: Failed to create directory(ies)\n"
+					"\tReason: " << ec.message() << "\n"
+				<< std::endl;
+				return false;
+			}
+			return true;
+		};
 
 	} // namespace io
 } // namespace v1_0_0

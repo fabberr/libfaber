@@ -1,5 +1,5 @@
 # Target name
-project(faber_io CXX)
+project(faber_io)
 
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
@@ -8,11 +8,10 @@ set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library(
 	${PROJECT_NAME} SHARED
 	"${INCLUDE_DIR}/io.h"
-	"${SRC_DIR}/io.cpp"
 )
-
 set_target_properties(
 	${PROJECT_NAME} PROPERTIES
+	LINKER_LANGUAGE CXX
 	CXX_STANDARD 20
 )
 
