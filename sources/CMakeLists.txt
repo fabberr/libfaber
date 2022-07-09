@@ -7,3 +7,4 @@ project(faber VERSION 1.0.0 LANGUAGES CXX)
 
 # Adding targets (library modules)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/io")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/test")
