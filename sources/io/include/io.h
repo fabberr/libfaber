@@ -5,8 +5,10 @@
 
 // C++ stdlib
 #include <filesystem> 	// filesystem utilities
-#include <iostream> 	// file streams
+#include <iostream> 	// streams
+#include <fstream> 		// file streams
 #include <functional> 	// function objects
+#include <concepts> 	// concepts library
 
 /********** io.h **********/
 
@@ -18,21 +20,6 @@ namespace faber { inline namespace v1_0_0 {
 	/** Input/output utilities and std::filesystem wrappers. */
 	namespace io {
 
-		/********** Internally Linked Free Functions **********/
-		
-		/** Implements `read_file` and `write_file`. */
-		template<typename Callable>
-		static bool invoke_read_or_write(const fs::path& filename, Callable fileio_fn, std::ios_base::openmode mode) {
-			bool success = false;
-			if (std::fstream file{filename, mode}; file.is_open()) {
-				success = fileio_fn(file);
-				file.close();
-			} else {
-				std::cerr << "[ERROR] Failed to open file `" << filename << "`\n";
-			}
-			return success;
-		}
-		
 		/********** API  **********/
 
 		/**
@@ -52,8 +39,15 @@ namespace faber { inline namespace v1_0_0 {
 		 * @returns `true` if the file could be opened and if `read_fn` returned 
 		 *          successfully, `false` otherwise.
 		*/
-		const auto read_file = [](const fs::path& filename, auto& read_fn) -> bool {
-			return invoke_read_or_write(filename, read_fn, std::ios_base::in);
+		const auto read_file = [](const fs::path& filename, std::invocable<std::ifstream&> auto read_fn) -> bool {
+			bool success = false;
+			if (std::ifstream file{filename}; file.is_open()) {
+				success = read_fn(file);
+				file.close();
+			} else {
+				std::cerr << "[ERROR] Failed to open file `" << filename << "` for reading\n";
+			}
+			return success;
 		};
 
 		/**
@@ -73,8 +67,15 @@ namespace faber { inline namespace v1_0_0 {
 		 * @returns `true` if the file could be opened and if `write_fn` returned 
 		 *          successfully, `false` otherwise.
 		*/
-		const auto write_fn = [](const fs::path& filename, auto& write_fn) -> bool {
-			return invoke_read_or_write(filename, write_fn, std::ios_base::out);
+		const auto write_fn = [](const fs::path& filename, std::invocable<std::ofstream&> auto write_fn) -> bool {
+			bool success = false;
+			if (std::ofstream file{filename}; file.is_open()) {
+				success = write_fn(file);
+				file.close();
+			} else {
+				std::cerr << "[ERROR] Failed to open file `" << filename << "` for writing\n";
+			}
+			return success;
 		};
 
 		/**
