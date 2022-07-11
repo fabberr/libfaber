@@ -26,7 +26,7 @@ namespace faber { inline namespace v1_0_0 {
 
 			/**
 			 * Implements logic for opening and closing files with basic error checking 
-			 * and invokes a callback function to operate on the stream associated o it.
+			 * and invokes a callback function to operate on a stream associated to it.
 			 * 
 			 * See `io::read_file`, `io::write_file` and `io::open_file_then` functions
 			 * on the API section of this header for more details about functionality.
@@ -202,55 +202,43 @@ namespace faber { inline namespace v1_0_0 {
 			return true;
 		};
 
-		// /**
-		//  * Returns the size (in bytes) of a file currently on memory. The file should've
-		//  * been opened with `std::fstream::binary`.
-		//  *
-		//  * @param file File stream associated with a file.
-		//  *
-		//  * @returns The size of the file in bytes.
-		// */
-		// std::size_t filesize(std::fstream& file) {
-		// 	using namespace std;
+		/**
+		 * Returns the size (in bytes) of a file loaded in memory.
+		 *
+		 * @param file Stream associated with a file.
+		 *
+		 * @returns The size of the file in bytes.
+		*/
+		std::size_t filesize(std::fstream& file) {
+			const auto cur = file.tellg();
 
-		// 	// save current positions
-		// 	const auto cur_g = file.tellg(), 
-		// 	           cur_p = file.tellp();
-		// 	// get size
-		// 	file.seekg(fstream::end);
-		// 	const auto size = file.tellg();
+			file.seekg(0, file.end);
+			const auto size = file.tellg();
 
-		// 	// rewind positions
-		// 	file.seekg(cur_g, fstream::beg);
-		// 	file.seekp(cur_p, fstream::beg);
+			file.seekg(cur);
 
-		// 	return size;
-		// };
+			return size;
+		};
 
-		// /**
-		//  * Returns the size (in bytes) of a file on disk. Does not take into account the
-		//  * real size occupied on disk, only the contents are counted.
-		//  *
-		//  * @param filename Path to a file.
-		//  *
-		//  * @returns The size of the file in bytes or 0 if the file doesn't exist.
-		// */
-		// std::size_t filesize(const std::string& filename) {
-		// 	using namespace std;
-		// 	using namespace faber::io;
+		/**
+		 * Returns the size (in bytes) of a file on disk.
+		 *
+		 * @param filename Path to a file.
+		 *
+		 * @returns The size of the file in bytes or 0 if the file doesn't exist.
+		*/
+		std::size_t filesize(const std::string& filename) {
+			using namespace faber::io;
 
-		// 	// prevents std::fstream constructor from creating file down the road
-		// 	if ( not fs::exists(filename) ) { return 0; }
+			// prevents std::fstream constructor from creating file down the road
+			if ( not fs::exists(filename) ) { return 0; }
 
-		// 	size_t size = 0;
-		// 	read_file(filename, [&size](fstream& file) -> bool {
-		// 		size = file.tellg();
-		// 		return true;
-		// 	}, (fstream::ate | fstream::binary));
-		// 	return size;
-		// };
-
-		const auto copy_to_stream = [](const fs::path& filename, std::ostream& os = std::cout) -> void {
+			size_t size = 0;
+			read_file(filename, [&size](std::fstream& file) -> bool {
+				size = file.tellg();
+				return true;
+			}, std::fstream::ate);
+			return size;
 		};
 
 	} // namespace io
