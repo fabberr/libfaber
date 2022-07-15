@@ -12,20 +12,17 @@ A portable, no-dependency, lightweight library providing small utilities and abs
 - [Usage](#usage)
   - [Linking With a CMake Project](#linking-with-a-cmake-project)
 
-## Releases
-[[Back to top]](#table-of-contents)
+## <span id="releases">Releases [[^](#table-of-contents)]</span>
 
 No prebuild binaries or packages are available as of yet, you'll have to build the library and link against it yourself. See [Building](#building) and [Usage](#usage) sections for more details.
 
-## Features
-[[Back to top]](#table-of-contents)
+## <span id="features">Features [[^](#table-of-contents)]</span>
 
 Too lazy to list them off right now, check source code. Only a few filesystem facilities atm.
 
 Feature suggestions welcome.
 
-## Building
-[[Back to top]](#table-of-contents)
+## <span id="building">Building [[^](#table-of-contents)]</span>
 
 Using the Docker image is the recommended method for setting up the build environment. Standalone, platform-specific instructions are also provided.
 
@@ -41,8 +38,7 @@ Coming Soon™
 #### Linux
 (You) should be able to build this ^:)
 
-## Usage
-[[Back to top]](#table-of-contents)
+## <span id="usage">Usage [[^](#table-of-contents)]</span>
 
 ### Linking With a CMake Project
 nothing here yet
