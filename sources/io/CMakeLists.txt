@@ -8,6 +8,7 @@ set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 add_library(
     ${PROJECT_NAME} SHARED
     "${INCLUDE_DIR}/io.h"
+    "${SRC_DIR}/file_monitor.cpp"
 )
 set_target_properties(
     ${PROJECT_NAME} PROPERTIES
