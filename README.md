@@ -33,7 +33,7 @@ Coming Soon™
 #### Requirements
 - [Git](https://git-scm.com/downloads)
 - [CMake](https://cmake.org/download/) 3.21+
-- Compiler with [C++20 support](https://en.cppreference.com/w/cpp/compiler_support#C.2B.2B20_features) (GCC 11 or LLVM Clang 12 recommended)
+- Compiler with [C++20 support](https://en.cppreference.com/w/cpp/compiler_support#C.2B.2B20_features) (GCC 12+ or LLVM Clang 14+ recommended)
 
 #### Linux
 (You) should be able to build this ^:)
